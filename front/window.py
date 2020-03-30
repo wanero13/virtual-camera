@@ -21,7 +21,7 @@ class Window(QMainWindow):
         p = self.palette()
         p.setColor(self.backgroundRole(), Qt.black)
         self.setPalette(p)
-        self.rotate.translate(0, 0, 50)
+        self.rotate.translate(0, 0, 60)
 
     def paintEvent(self, e):
         self.painter = QPainter(self)
@@ -80,6 +80,8 @@ class Window(QMainWindow):
 
     def zoom(self, x):
         self.d = self.d + x
+        if self.d<0:
+            self.d=0.000001
 
     def recalculate(self, point):
         x = point[0]
@@ -95,14 +97,25 @@ class Window(QMainWindow):
         figures = self.rotate.data
         for figure in figures:
             points = []
+            nodraw = []
             for point in figure:
+                if point[2] < 0:
+                    nodraw.append(1)
+                else:
+                    nodraw.append(0)
                 x, y = self.recalculate(point)
                 points.append(QPointF(x, y))
             for i in range(3):
-                self.painter.drawLine(points[i], points[i + 1])
-                self.painter.drawLine(points[i], points[i + 4])
-            self.painter.drawLine(points[0], points[3])
-            self.painter.drawLine(points[3], points[7])
+                if nodraw[i] != 1 or nodraw[i + 1] != 1:
+                    self.painter.drawLine(points[i], points[i + 1])
+                if nodraw[i] != 1 or nodraw[i + 4] != 1:
+                    self.painter.drawLine(points[i], points[i + 4])
+            if nodraw[0] != 1 or nodraw[3] != 1:
+                self.painter.drawLine(points[0], points[3])
+            if nodraw[3] != 1 or nodraw[7] != 1:
+                self.painter.drawLine(points[3], points[7])
             for i in range(4, 7):
-                self.painter.drawLine(points[i], points[i + 1])
-            self.painter.drawLine(points[4], points[7])
+                if nodraw[i] != 1 or nodraw[i + 1] != 1:
+                    self.painter.drawLine(points[i], points[i + 1])
+            if nodraw[4] != 1 or nodraw[7] != 1:
+                self.painter.drawLine(points[4], points[7])

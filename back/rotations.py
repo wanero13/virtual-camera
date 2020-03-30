@@ -17,7 +17,7 @@ class Rotate:
         ])
         self.recalc(m)
 
-    def horizontal(self,x):
+    def horizontal(self, x):
         m = np.array([
             [math.cos(x), 0, math.sin(x), 0],
             [0, 1, 0, 0],
@@ -40,8 +40,6 @@ class Rotate:
             [0, 0, 1, 0],
             [0, 0, 0, 1]])
         self.recalc(m)
-
-
 
     def recalc(self, m):
         a, b, c = self.data.shape

@@ -1,6 +1,7 @@
 import numpy as np
 import json as js
 
+
 class Reader():
     def __init__(self):
         self.file = './input.txt'
