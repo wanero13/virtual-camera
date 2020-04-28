@@ -1,6 +1,6 @@
 from back.rotations import Rotate
 from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtGui import QPainter, QPen, QPolygonF, QBrush
+from PyQt5.QtGui import QPainter, QPen, QPolygonF, QBrush, QColor
 from PyQt5.QtCore import Qt, QPointF
 import numpy
 import math
@@ -19,18 +19,21 @@ class Window(QMainWindow):
         self.setGeometry(0, 0, self.w, self.h)
         self.setWindowTitle("Wirtualna Kamera")
         p = self.palette()
-        p.setColor(self.backgroundRole(), Qt.black)
+        p.setColor(self.backgroundRole(), Qt.white)
         self.setPalette(p)
         self.rotate.translate(0, 0, 60)
-        self.colors = [Qt.gray, Qt.yellow, Qt.blue, Qt.green, Qt.white, Qt.cyan]
+        self.colors = [QColor(255,51,51),QColor(153,0,0),QColor(153,76,0),QColor(255,78,102),QColor(153,153,0),QColor(255,255,0),
+                       QColor(128,255,0),QColor(51,102,0),QColor(0,153,0),QColor(51,255,51),QColor(0,153,76),QColor(51,255,153),
+                       QColor(0,255,255),QColor(0,51,51),QColor(0,128,255),QColor(0,51,102),QColor(0,0,153),QColor(102,102,255),
+                       QColor(153,51,255),QColor(51,0,102),QColor(102,0,102),QColor(255,0,255),QColor(255,0,127),QColor(153,0,76)]
         self.colorCheck = 0
 
     def paintEvent(self, e):
         self.painter = QPainter(self)
         self.painter.translate(self.w / 2, self.h / 2)
         self.painter.scale(1, -1)
-        self.painter.setPen(QPen(Qt.red, 2, Qt.SolidLine))
-        self.painter.setBrush(QBrush(Qt.red, Qt.SolidPattern))
+        self.painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
+        self.painter.setBrush(QBrush(Qt.gray, Qt.SolidPattern))
         self.paint()
         self.painter.end()
 
@@ -172,6 +175,6 @@ class Window(QMainWindow):
         for pol in polygons:
             self.painter.drawPolygon(pol)
             self.colorCheck += 1
-            if (self.colorCheck == 6):
+            if (self.colorCheck == 24):
                 self.colorCheck = 0
             self.painter.setBrush(QBrush(self.colors[self.colorCheck] , Qt.SolidPattern))
